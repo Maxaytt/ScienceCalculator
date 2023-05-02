@@ -211,7 +211,10 @@ namespace Kalkulator
             }
             else
             {
-                TextBlockSecondary.Text += TextBlockMain.Text + '=';
+                if(!TextBlockSecondary.Text.EndsWith(')'))
+                    TextBlockSecondary.Text += TextBlockMain.Text + '=';
+                else
+                    TextBlockSecondary.Text += '=';
                 var expression = TextBlockSecondary.Text[..^1];
                 var result = new DataTable().Compute(expression, null);
                 TextBlockMain.Text = result.ToString();
@@ -220,4 +223,5 @@ namespace Kalkulator
         }
     }
     //TODO: function compiler for complex functions
+    //TODO: equation tests
 }
