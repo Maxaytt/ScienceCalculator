@@ -20,7 +20,7 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
-            <Grid Background="Bisque">
+            <Grid Background="WhiteSmoke">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="6*"/>
                     <RowDefinition Height="4*"/>
@@ -72,12 +72,12 @@
                     <Button Grid.Row="1" Grid.Column="4" BorderBrush="Transparent"></Button>
                 </Grid>
             </Grid>
-            <Grid Grid.Row="1" Background="Azure">
+            <Grid Grid.Row="1" Background="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="9*"/>
                 </Grid.RowDefinitions>
-                <Grid Background="Aquamarine">
+                <Grid Background="White">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -132,7 +132,7 @@
                             <Run BaselineAlignment="Top" FontSize="8">2</Run>
                         </TextBlock>
                     </Button>
-                    <Button Grid.Row="1" Grid.Column="1" Name="BtnOneBy">
+                    <Button Grid.Row="1" Grid.Column="1" Name="BtnOneBy" Click="BtnOneBy_OnClick">
                         <TextBlock>
                             <Run BaselineAlignment="Top" FontSize="12">1</Run>
                             /x
@@ -140,7 +140,7 @@
                     </Button>
                     <Button Grid.Row="1" Grid.Column="2" Name="BtnAbs">|x|</Button>
                     <Button Grid.Row="1" Grid.Column="3" Name="BtnExp">exp</Button>
-                    <Button Grid.Row="1" Grid.Column="4" Name="BtnMod">mod</Button>
+                    <Button Grid.Row="1" Grid.Column="4" Name="BtnMod" Click="BtnSimpleOperation_OnClick">%</Button>
                     <Button Grid.Row="2" Grid.Column="0" Name="BtnSqrt">
                         <TextBlock>
                             <Run BaselineAlignment="TextTop" FontSize="8">2</Run>
@@ -151,7 +151,7 @@
                     <Button Grid.Row="2" Grid.Column="2" Name="BtnRBracket" Click="BtnRBracket_OnClick">)</Button>
                     <Button Grid.Row="2" Grid.Column="3" Name="BtnFactorial">n!</Button>
                     <Button Grid.Row="2" Grid.Column="4" Name="BtnDiv" Click="BtnSimpleOperation_OnClick">/</Button>
-                    <Button Grid.Row="3" Grid.Column="0" Name="BtnDegree">
+                    <Button Grid.Row="3" Grid.Column="0" Name="BtnDegree" Click="BtnDegree_OnClick">
                         <TextBlock>
                             x
                             <Run BaselineAlignment="Top" FontSize="9">y</Run>
@@ -210,5 +210,4 @@
             </ListBox>
         </Grid>
     </Grid>
-    
 </Window>
