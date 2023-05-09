@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Data;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +19,8 @@ namespace Kalkulator
         private static bool _isResult;
         private static int _unpairedLBrackets;
         private readonly DataTable _dataTable = new DataTable();
+        private readonly FunctionInterpreter _interpreter = new FunctionInterpreter();
+        private readonly int _maxLength = 50;
 
         private void BtnNumber_OnClick(object sender, RoutedEventArgs e)
         {
@@ -131,7 +132,7 @@ namespace Kalkulator
             {
                 if (TextBlockMain.Text == "0")
                     TextBlockMain.Text = number;
-                else if (TextBlockMain.Text.Length < 26)
+                else if (TextBlockMain.Text.Length < _maxLength)
                     TextBlockMain.Text += number;
             }
             else
@@ -285,7 +286,13 @@ namespace Kalkulator
         {
             
         }
+
+        private void BtnSqr_OnClick(object sender, RoutedEventArgs e)
+        {
+            var str = "Sqr(2+4/5*3)+Pow(3,2)+Sqrt(4)";
+            TextBlockSecondary.Text = str;
+            var res = _interpreter.Calculate(str);
+            TextBlockMain.Text = res;
+        }
     }
-    //TODO: function compiler for complex functions
-    //TODO: equation tests
 }

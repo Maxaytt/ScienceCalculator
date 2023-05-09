@@ -126,7 +126,7 @@
                     <Button Grid.Row="0" Grid.Column="2" Name="BtnEuler" Click="BtnEuler_OnClick">e</Button>
                     <Button Grid.Row="0" Grid.Column="3" Name="BtnClear" Click="BtnClear_OnClick">C</Button>
                     <Button Grid.Row="0" Grid.Column="4" Name="BtnDel" Click="BtnDel_OnClick">Del</Button>
-                    <Button Grid.Row="1" Grid.Column="0" Name="BtnSqr">
+                    <Button Grid.Row="1" Grid.Column="0" Name="BtnSqr" Click="BtnSqr_OnClick">
                         <TextBlock>
                             x
                             <Run BaselineAlignment="Top" FontSize="8">2</Run>
