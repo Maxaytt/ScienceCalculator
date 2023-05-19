@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Controls;
 
 namespace Kalkulator.StateMachines;
@@ -35,32 +36,32 @@ public class TrigonometryStateMachine
     {
         if (state == TrigonometryState.SecondMode)
         {
-            if (_currentState != TrigonometryState.BaseMode)
-            {
-                _currentState = TrigonometryState.BaseMode;
-                
-                ChangeToBaseButtonsState();
-            }
-            else
+            if (_currentState == TrigonometryState.BaseMode)
             {
                 _currentState = TrigonometryState.SecondMode;
                 
                 ChangeToSecondButtonsState();
             }
+            else 
+            {
+                _currentState = TrigonometryState.BaseMode;
+                
+                ChangeToBaseButtonsState();
+            }
         }
         else if (state == TrigonometryState.HypoMode)
         {
-            if (_currentState != TrigonometryState.BaseMode)
-            {
-                _currentState = TrigonometryState.BaseMode;
-
-                ChangeToBaseButtonsState();
-            }
-            else
+            if (_currentState == TrigonometryState.BaseMode)
             {
                 _currentState = TrigonometryState.HypoMode;
                 
                 ChangeToHypoButtonsState();
+            }
+            else
+            {
+                _currentState = TrigonometryState.BaseMode;
+
+                ChangeToBaseButtonsState();
             }
         }
     }

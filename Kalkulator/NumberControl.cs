@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Kalkulator.StateMachines;
 
 namespace Kalkulator;
 
@@ -96,7 +97,6 @@ public partial class MainWindow
         }
         else
         {
-            var secondaryLen = TextBlockSecondary.Text.Length;
             var lastChar = TextBlockSecondary.Text[^1];
             switch (lastChar)
             {
@@ -156,13 +156,11 @@ public partial class MainWindow
 
     private void BtnSecondTrigonometry_OnClick(object sender, RoutedEventArgs e)
     {
-        
+        TrigonometryStateMachineInstance.ChangeState(TrigonometryState.SecondMode);
     }
 
     private void BtnHypMode_OnClick(object sender, RoutedEventArgs e)
     {
-        
-        
-        
+        TrigonometryStateMachineInstance.ChangeState(TrigonometryState.HypoMode);
     }
 } 

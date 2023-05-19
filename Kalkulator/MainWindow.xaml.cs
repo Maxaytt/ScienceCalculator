@@ -14,19 +14,27 @@ namespace Kalkulator
         private static int _unpairedLBrackets;
         private readonly FunctionInterpreter _interpreter = new();
         private readonly ComplexFunctionsStateMachine _stateMachine;
-        private readonly Random _rand = new Random((int)DateTime.Now.Ticks);
+        private readonly Lazy<TrigonometryStateMachine> _trigonometryStateMachineLazy;
+        private TrigonometryStateMachine TrigonometryStateMachineInstance => _trigonometryStateMachineLazy.Value;
+        private readonly Random _rand = new((int)DateTime.Now.Ticks);
         private const int MaxLength = 100;
         public MainWindow()
         {
-
             InitializeComponent();
-            _stateMachine = new(
+            _stateMachine = new ComplexFunctionsStateMachine(
             BtnSqr,
             BtnSqrt,
             BtnPow,
             BtnPow10,
             BtnLog10,
             BtnLn);
+            _trigonometryStateMachineLazy = new Lazy<TrigonometryStateMachine>(() => new TrigonometryStateMachine(
+                BtnSin,
+                BtnSec,
+                BtnCos,
+                BtnCsc,
+                BtnTan,
+                BtnCot));
         }
 
         
