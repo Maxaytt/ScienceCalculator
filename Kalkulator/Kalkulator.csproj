@@ -18,6 +18,9 @@
       <Compile Update="NumberControl.cs">
         <DependentUpon>MainWindow.xaml</DependentUpon>
       </Compile>
+      <Compile Update="ComplexFunctions.cs">
+        <DependentUpon>MainWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

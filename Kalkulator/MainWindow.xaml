@@ -9,6 +9,35 @@
         <Grid.Resources>
             <Style TargetType="Button">
                 <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="5"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border CornerRadius="5"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -43,7 +72,7 @@
                         TextAlignment="Right"
                         Foreground="DimGray"></TextBlock>
                     <TextBlock Grid.Row="1" Name="TextBlockMain"
-                               Width="560" 
+                               Width="Auto"
                                Text="0"
                                FontSize="40"
                                Padding="0,0,2,0"
@@ -84,10 +113,85 @@
                         <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
                     <Grid>
-                        <Button>trig</Button>
+                        <ToggleButton Content="trig"
+                                      x:Name="Trig"/>
+                        <Popup PlacementTarget="{Binding ElementName=Trig}"
+                               IsOpen="{Binding IsChecked,ElementName=Trig}"
+                               AllowsTransparency="True"
+                               Width="160" Height="80"
+                               HorizontalOffset="50">
+                            <Border Background="White"
+                                CornerRadius="4"
+                                BorderBrush="Transparent"
+                                Padding="2"
+                                BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <Button Name="BtnSecondTrigonometry" Click="BtnSecondTrigonometry_OnClick">
+                                        <TextBlock>
+                                            2
+                                            <Run BaselineAlignment="Superscript" FontSize="8">nd</Run>
+                                        </TextBlock>
+                                    </Button>
+                                    <Button Grid.Row="1" Grid.Column="0" Name="BtnHypMode" Click="BtnHypMode_OnClick">hyp</Button>
+                                    <Button Grid.Row="0" Grid.Column="1" Name="BtnSin" Click="BtnComplexFunction_OnClick">sin</Button>
+                                    <Button Grid.Row="1" Grid.Column="1" Name="BtnSec" Click="BtnComplexFunction_OnClick">sec</Button>
+                                    <Button Grid.Row="0" Grid.Column="2" Name="BtnCos" Click="BtnComplexFunction_OnClick">cos</Button>
+                                    <Button Grid.Row="1" Grid.Column="2" Name="BtnCsc" Click="BtnComplexFunction_OnClick">csc</Button>
+                                    <Button Grid.Row="0" Grid.Column="3" Name="BtnTan" Click="BtnComplexFunction_OnClick">tan</Button>
+                                    <Button Grid.Row="1" Grid.Column="3" Name="BtnCot" Click="BtnComplexFunction_OnClick">cot</Button>
+                                </Grid>
+                                <Border.Effect>
+                                    <DropShadowEffect Opacity=".25" />
+                                </Border.Effect>
+                            </Border>
+                        </Popup>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <Button>fun</Button>
+                        <ToggleButton Content="fun"
+                                      x:Name="Fun"/>
+                        <Popup PlacementTarget="{Binding ElementName=Fun}"
+                               IsOpen="{Binding IsChecked,ElementName=Fun}"
+                               AllowsTransparency="True"
+                               Width="160" Height="80"
+                               HorizontalOffset="50">
+                            <Border Background="White"
+                                CornerRadius="4"
+                                BorderBrush="Transparent"
+                                Padding="2"
+                                BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Name="MBtAbs" Click="BtnComplexFunction_OnClick">|x|</Button>
+                                    <Button Grid.Row="1" Grid.Column="0" Name="BtnRand" Click="BtnRand_OnClick">rand</Button>
+                                    <Button Grid.Row="0" Grid.Column="1" Name="BtnFloor" Click="BtnComplexFunction_OnClick">floor</Button>
+                                    <Button Grid.Row="1" Grid.Column="1" Name="BtnDms" Click="BtnComplexFunction_OnClick">->dms</Button>
+                                    <Button Grid.Row="0" Grid.Column="2" Name="BtnCeiling" Click="BtnComplexFunction_OnClick">ceil</Button>
+                                    <Button Grid.Row="1" Grid.Column="2" Name="BtnDeg" Click="BtnComplexFunction_OnClick">->deg</Button>
+                                </Grid>
+                                <Border.Effect>
+                                    <DropShadowEffect Opacity=".25" />
+                                </Border.Effect>
+                            </Border>
+                        </Popup>
                     </Grid>
                 </Grid>
                 <Grid Row="1">
@@ -111,10 +215,24 @@
                         <Style TargetType="Button">
                             <Setter Property="FontSize" Value="16"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Background" Value="LightGray"></Setter>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border CornerRadius="5"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </Grid.Resources>
                     <Button></Button>
-                    <Button Grid.Row="0" Grid.Column="0" Name="BtnSecond"> 
+                    <Button Grid.Row="0" Grid.Column="0" Name="BtnSecond" Click="BtnSecond_OnClick"> 
                         <TextBlock>
                             2
                             <Run BaselineAlignment="Superscript" FontSize="8">nd</Run>
@@ -126,7 +244,7 @@
                     <Button Grid.Row="0" Grid.Column="2" Name="BtnEuler" Click="BtnEuler_OnClick">e</Button>
                     <Button Grid.Row="0" Grid.Column="3" Name="BtnClear" Click="BtnClear_OnClick">C</Button>
                     <Button Grid.Row="0" Grid.Column="4" Name="BtnDel" Click="BtnDel_OnClick">Del</Button>
-                    <Button Grid.Row="1" Grid.Column="0" Name="BtnSqr" Click="BtnSqr_OnClick">
+                    <Button Grid.Row="1" Grid.Column="0" Name="BtnSqr" Click="BtnComplexFunction_OnClick">
                         <TextBlock>
                             x
                             <Run BaselineAlignment="Top" FontSize="8">2</Run>
@@ -138,10 +256,10 @@
                             /x
                         </TextBlock>
                     </Button>
-                    <Button Grid.Row="1" Grid.Column="2" Name="BtnAbs">|x|</Button>
+                    <Button Grid.Row="1" Grid.Column="2" Name="BtnAbs" Click="BtnComplexFunction_OnClick">|x|</Button>
                     <Button Grid.Row="1" Grid.Column="3" Name="BtnExp">exp</Button>
                     <Button Grid.Row="1" Grid.Column="4" Name="BtnMod" Click="BtnSimpleOperation_OnClick">%</Button>
-                    <Button Grid.Row="2" Grid.Column="0" Name="BtnSqrt">
+                    <Button Grid.Row="2" Grid.Column="0" Name="BtnSqrt" Click="BtnComplexFunction_OnClick">
                         <TextBlock>
                             <Run BaselineAlignment="TextTop" FontSize="8">2</Run>
                             &#x221A;x
@@ -149,9 +267,9 @@
                     </Button>
                     <Button Grid.Row="2" Grid.Column="1" Name="BtnLBracket" Click="BtnLBracket_OnClick">(</Button>
                     <Button Grid.Row="2" Grid.Column="2" Name="BtnRBracket" Click="BtnRBracket_OnClick">)</Button>
-                    <Button Grid.Row="2" Grid.Column="3" Name="BtnFactorial">n!</Button>
+                    <Button Grid.Row="2" Grid.Column="3" Name="BtnFact" Click="BtnComplexFunction_OnClick">n!</Button>
                     <Button Grid.Row="2" Grid.Column="4" Name="BtnDiv" Click="BtnSimpleOperation_OnClick">/</Button>
-                    <Button Grid.Row="3" Grid.Column="0" Name="BtnDegree" Click="BtnDegree_OnClick">
+                    <Button Grid.Row="3" Grid.Column="0" Name="BtnPow" Click="BtnComplexFunction_OnClick">
                         <TextBlock>
                             x
                             <Run BaselineAlignment="Top" FontSize="9">y</Run>
@@ -161,7 +279,7 @@
                     <Button Grid.Row="3" Grid.Column="2" Name="BtnEight" Click="BtnNumber_OnClick">8</Button>
                     <Button Grid.Row="3" Grid.Column="3" Name="BtnNine" Click="BtnNumber_OnClick">9</Button>
                     <Button Grid.Row="3" Grid.Column="4" FontSize="25" Name="BtnMul" Click="BtnSimpleOperation_OnClick">*</Button>
-                    <Button Grid.Row="4" Grid.Column="0" Name="BtnTenDegree">
+                    <Button Grid.Row="4" Grid.Column="0" Name="BtnPow10" Click="BtnComplexFunction_OnClick">
                         <TextBlock>
                             10
                             <Run BaselineAlignment="Top" FontSize="9">x</Run>
@@ -171,12 +289,12 @@
                     <Button Grid.Row="4" Grid.Column="2" Name="BtnFive" Click="BtnNumber_OnClick">5</Button>
                     <Button Grid.Row="4" Grid.Column="3" Name="BtnSix" Click="BtnNumber_OnClick">6</Button>
                     <Button Grid.Row="4" Grid.Column="4" FontSize="25" Name="BtnSub" Click="BtnSimpleOperation_OnClick">-</Button>
-                    <Button Grid.Row="5" Grid.Column="0" Name="BtnLog">log</Button>
+                    <Button Grid.Row="5" Grid.Column="0" Name="BtnLog10" Click="BtnComplexFunction_OnClick">log</Button>
                     <Button Grid.Row="5" Grid.Column="1" Name="BtnOne" Click="BtnNumber_OnClick">1</Button>
                     <Button Grid.Row="5" Grid.Column="2" Name="BtnTwo" Click="BtnNumber_OnClick">2</Button>
                     <Button Grid.Row="5" Grid.Column="3" Name="BtnThree" Click="BtnNumber_OnClick">3</Button>
                     <Button Grid.Row="5" Grid.Column="4" Name="BtnAdd" Click="BtnSimpleOperation_OnClick">+</Button>
-                    <Button Grid.Row="6" Grid.Column="0" Name="BtnNutLog">ln</Button>
+                    <Button Grid.Row="6" Grid.Column="0" Name="BtnLn" Click="BtnComplexFunction_OnClick">ln</Button>
                     <Button Grid.Row="6" Grid.Column="1" Name="BtnNeg" Click="BtnNeg_OnClick">
                         <TextBlock>
                             <Run BaselineAlignment="Top" FontSize="12">+</Run>
@@ -185,7 +303,7 @@
                         </TextBlock>
                     </Button>
                     <Button Grid.Row="6" Grid.Column="2" Name="BtnZero" Click="BtnZero_OnClick">0</Button>
-                    <Button Grid.Row="6" Grid.Column="3" Name="BtnDot">.</Button>
+                    <Button Grid.Row="6" Grid.Column="3" Name="BtnDot" Click="BtnDot_OnClick">.</Button>
                     <Button Grid.Row="6" Grid.Column="4" 
                             Background="DodgerBlue" Name="BtnEqual" Click="BtnEqual_OnClick">=</Button>
                 </Grid>
@@ -205,7 +323,8 @@
                     Background="Azure">History</Button>
             <Button Grid.Row="0" Grid.Column="1" 
                     Background="Azure">Memory</Button>
-            <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="ListBoxHistory">
+            <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="ListBoxHistory"
+                     BorderBrush="Transparent">
                 
             </ListBox>
         </Grid>

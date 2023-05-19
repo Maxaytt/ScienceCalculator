@@ -1,165 +1,132 @@
 ﻿using System;
-using System.Collections;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+using Kalkulator.Interpreter;
+using Kalkulator.StateMachines;
 
 namespace Kalkulator
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///  helpers and fields of MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-
         private static bool _isResult;
         private static int _unpairedLBrackets;
-        private readonly DataTable _dataTable = new DataTable();
-        private readonly FunctionInterpreter _interpreter = new FunctionInterpreter();
-        private const int MaxLength = 50;
-
-        private void BtnClear_OnClick(object sender, RoutedEventArgs e)
+        private readonly FunctionInterpreter _interpreter = new();
+        private readonly ComplexFunctionsStateMachine _stateMachine;
+        private readonly Random _rand = new Random((int)DateTime.Now.Ticks);
+        private const int MaxLength = 100;
+        public MainWindow()
         {
-            _isResult = false;
-            if (TextBlockMain.Text == "0")
-            {
-                TextBlockSecondary.Text = string.Empty;
-                return;
-            }
-            TextBlockMain.Text = "0";
+
+            InitializeComponent();
+            _stateMachine = new(
+            BtnSqr,
+            BtnSqrt,
+            BtnPow,
+            BtnPow10,
+            BtnLog10,
+            BtnLn);
         }
 
         
-
-
-        
-
-  
-
-
-        private void BtnLBracket_OnClick(object sender, RoutedEventArgs e)
+        private static string? AddMissingBrackets(string expression)
         {
-            if (string.IsNullOrEmpty(TextBlockSecondary.Text))
+            var lBrackets = expression.Count(c => c == '(');
+            var rBrackets = expression.Count(c => c == ')');
+            if (lBrackets >= rBrackets)
             {
-                TextBlockSecondary.Text += '(';
+                var missingRightBrackets = lBrackets - rBrackets;
+                expression += new string(')', missingRightBrackets);
+                return expression;
             }
-            else 
-            {
-                var secondaryLen = TextBlockSecondary.Text.Length;
-                var lastChar = TextBlockSecondary.Text[secondaryLen - 1];
-                switch (lastChar)
-                {
-                    case '(':
-                        TextBlockSecondary.Text += '(';
-                        break;
-                    case ')':
-                        TextBlockSecondary.Text += "*(";
-                        break;
-                    default:
-                        if (_isResult)
-                        {
-                            TextBlockSecondary.Text += "(";
-                            TextBlockMain.Text = "0";
-                        }
-                        else
-                        {
-                            TextBlockSecondary.Text += TextBlockMain.Text + "*(";
-                        }
-                        break;
-                }
-            }
-            _unpairedLBrackets++;
-        }
-        
-        private void BtnRBracket_OnClick(object sender, RoutedEventArgs e)
-        {
-            if (_unpairedLBrackets == 0) return;
-
-
-            TextBlockSecondary.Text += TextBlockSecondary.Text[^1] switch
-            {
-                ')' => ")",
-                _ => string.Concat(TextBlockMain.Text, ")")
-            };
-            _unpairedLBrackets--;
-        }
-
-        private int LastLBracketIndex(string expression)
-        {
-            var ind = 0;
-            var res = 0;
-            foreach (var c in expression)
-            {
-                if (c == '(')
-                {
-                    res = ind;
-                }
-                ind++;
-            }
-
-            return res;
-        }
-
-        private void BtnDegree_OnClick(object sender, RoutedEventArgs e)
-        {
-            var sec = TextBlockSecondary.Text;
-            var lastChar = TextBlockSecondary.Text[^1];
-            var length = TextBlockSecondary.Text.Length;
-            var index = lastChar == ')' ?
-                FindIndexOfBracketPair(sec,length-1) : 0;
             
-            TextBlockSecondary.Text = lastChar switch
-            {
-                ')' => string.Concat(sec[..index], "Pow(", sec[index..], ","),
-                '(' => string.Concat(sec, "Pow(", TextBlockMain.Text, ","),
-                _ when IsOperator(lastChar) => string.Concat(sec, "Pow(", TextBlockMain.Text, ","),
-                _ => string.Concat(sec, "Pow(", ","),
-            };
-            _unpairedLBrackets++;
+            return null;
         }
-
-        private bool IsOperator(char c)
-        {
-            var ops = new [] { '+', '-', '*', '/'};
-            return ops.Contains(c);
-        }
-        private int FindIndexOfBracketPair(string str, int indexOfElement)
+        
+        private static int FindIndexOfBracketPair(string str, int indexOfElement)
         {
             var element = str[indexOfElement];
             if (element != ')') throw new Exception("Element isn't a right bracket");
             var rBracketCount = 0;
-            for(var i = indexOfElement-1; i >= 0; i--)
+            for (var i = indexOfElement - 1; i >= 0; i--)
             {
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (str[i] == ')')
                 {
                     rBracketCount++;
                 }
-                else if(str[i] == '(' && rBracketCount == 0)
+                else if (str[i] == '(' && rBracketCount == 0)
                 {
                     return i;
                 }
-                else if(str[i] == '(')
+                else if (str[i] == '(')
                 {
                     rBracketCount--;
                 }
             }
-            
+
             throw new Exception("Wrong amount of brackets");
         }
         
-        private void BtnSqr_OnClick(object sender, RoutedEventArgs e)
+        private static bool IsOperator(char c)
         {
-            var str = "Sqr(2+4/5*3)+Pow(3,2)+Sqrt(4)";
-            TextBlockSecondary.Text = str;
-            var res = _interpreter.Calculate(str);
-            TextBlockMain.Text = res;
+            var ops = new[] { '+', '-', '*', '/' };
+            return ops.Contains(c);
+        }
+        
+        private static int LastLBracketIndex(string expression)
+        {
+            var i = 0;
+            var resultIndex = 0;
+            foreach (var c in expression)
+            {
+                if (c == '(')
+                {
+                    resultIndex = i;
+                }
+
+                i++;
+            }
+
+            return resultIndex;
+        }
+        
+        private bool TryHandleNoContext(string function, int argumentsCount)
+        {
+            if (TextBlockSecondary.Text.Length != 0) return false;
+
+            if (argumentsCount == 1)
+            {
+                TextBlockSecondary.Text = string.Concat(function, "(", TextBlockMain.Text, ")");
+                CalculateAndDisplay();
+            }
+            else if(argumentsCount == 2)
+            {
+                TextBlockSecondary.Text = string.Concat(function, "(", TextBlockMain.Text, ",");
+                _unpairedLBrackets++;
+            }
+            _isResult = true;
+            
+            return true;
+        }
+
+        private void CalculateAndDisplay()
+        {
+            var expression = AddMissingBrackets(TextBlockSecondary.Text);
+            if (expression is not null)
+            {
+                var result = _interpreter.Calculate(expression);
+                TextBlockMain.Text = result;
+                _isResult = true;
+            }
+        }
+        
+        private void CalculateAndDisplay(string expression)
+        {
+            var result = _interpreter.Calculate(expression);
+            TextBlockMain.Text = result;
+            _isResult = true;
         }
     }
 }

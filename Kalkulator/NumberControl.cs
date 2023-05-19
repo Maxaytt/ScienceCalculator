@@ -75,4 +75,94 @@ public partial class MainWindow
             _isResult = false;
         }
     }
-}
+
+    private void BtnClear_OnClick(object sender, RoutedEventArgs e)
+    {
+        _isResult = false;
+        if (TextBlockMain.Text == "0")
+        {
+            TextBlockSecondary.Text = string.Empty;
+            return;
+        }
+
+        TextBlockMain.Text = "0";
+    }
+
+    private void BtnLBracket_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(TextBlockSecondary.Text))
+        {
+            TextBlockSecondary.Text += '(';
+        }
+        else
+        {
+            var secondaryLen = TextBlockSecondary.Text.Length;
+            var lastChar = TextBlockSecondary.Text[^1];
+            switch (lastChar)
+            {
+                case '(':
+                    TextBlockSecondary.Text += '(';
+                    break;
+                case ')':
+                    TextBlockSecondary.Text += "*(";
+                    break;
+                default:
+                    if (_isResult)
+                    {
+                        TextBlockSecondary.Text += "(";
+                        TextBlockMain.Text = "0";
+                    }
+                    else
+                    {
+                        TextBlockSecondary.Text += TextBlockMain.Text + "*(";
+                    }
+
+                    break;
+            }
+        }
+
+        _unpairedLBrackets++;
+    }
+
+    private void BtnRBracket_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (_unpairedLBrackets == 0) return;
+
+
+        TextBlockSecondary.Text += TextBlockSecondary.Text[^1] switch
+        {
+            ')' => ")",
+            _ => string.Concat(TextBlockMain.Text, ")")
+        };
+        _unpairedLBrackets--;
+        
+        var expression = AddMissingBrackets(TextBlockSecondary.Text);
+        if (expression is not null)
+        {
+            var result = _interpreter.Calculate(expression);
+            TextBlockMain.Text = result;
+            _isResult = true;
+        }
+    }
+    
+    private void BtnDot_OnClick(object sender, RoutedEventArgs e)
+    {
+        var lastChar = TextBlockMain.Text[^1];
+        if (char.IsDigit(lastChar) && !TextBlockMain.Text.Contains('.'))
+        {
+            TextBlockMain.Text += '.';
+        }
+    }
+
+    private void BtnSecondTrigonometry_OnClick(object sender, RoutedEventArgs e)
+    {
+        
+    }
+
+    private void BtnHypMode_OnClick(object sender, RoutedEventArgs e)
+    {
+        
+        
+        
+    }
+} 
